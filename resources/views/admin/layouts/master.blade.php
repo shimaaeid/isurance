@@ -60,7 +60,7 @@
         <!-- User Info-->
         <div class="sidenav-header-inner text-center"><img src="{{url('public/superAdmin/img/SuperAdmin.png')}}" alt="person"
             class="img-fluid rounded-circle">
-          <h2 class="h5">shimaa</h2><span>Insurance</span>
+          <h2 class="h5">{{ auth::user()->name }}</h2><span>Insurance</span>
         </div>
         <!-- Small Brand information, appears on minimized sidebar-->
         <div class="sidenav-header-logo"><a href="index.html" class="brand-small text-center"> <strong
