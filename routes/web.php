@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('evaluation_type', 'EvaluationTypeController');
     Route::resource('insurance_grade','InsuranceGrateController');
     Route::resource('employee', 'EmployeeController');
+    Route::get('emp_edit/{id}','EmployeeController@edit');
     Route::get('/employeeDetails/{id}', 'EmployeeController@show');
     Route::resource('emp_relatives', 'EmpRelativesController');
     Route::resource('media', 'MediaController');

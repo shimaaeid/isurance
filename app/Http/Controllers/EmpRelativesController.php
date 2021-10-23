@@ -83,9 +83,23 @@ class EmpRelativesController extends Controller
      * @param  \App\emp_relatives  $emp_relatives
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, emp_relatives $emp_relatives)
+    public function update(Request $request)
     {
         //
+        $validate = $this->validate($request, [
+            'name' => 'required',
+            'relative_id' => 'required',
+            'emp_id' => 'required'
+        ]);
+
+        $emp_relatives = emp_relatives::where('id', $request->id)->update([
+            'name' => $request->name,
+            'relative_id' => $request->relative_id,
+            'emp_id' => $request->emp_id
+
+        ]);
+
+        return redirect()->back();
     }
 
     /**
@@ -94,8 +108,13 @@ class EmpRelativesController extends Controller
      * @param  \App\emp_relatives  $emp_relatives
      * @return \Illuminate\Http\Response
      */
-    public function destroy(emp_relatives $emp_relatives)
+    public function destroy(Request $request)
     {
         //
+        $emp = emp_relatives::findOrFail($request->id);
+        $emp->delete();
+
+        return redirect()->back();
+
     }
 }

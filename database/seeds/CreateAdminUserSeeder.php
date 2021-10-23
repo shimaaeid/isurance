@@ -35,7 +35,7 @@ class CreateAdminUserSeeder extends Seeder
 
        $roles = [
                 [
-                    'name' => 'SuperAdmin'
+                    'name' => 'superadmin'
                 ],
 
 

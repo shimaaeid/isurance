@@ -96,8 +96,9 @@ class EmployeeController extends Controller
         $employee = employee::where('id', $id)->first();
         $emp_relative = emp_relatives::where('emp_id', $id)->get();
         $relative_type = relatives_type::all();
+        $test = relatives_type::all();
         $media = media::where('column_id', $id)->where('model_name', 'like', '%employee%')->get();
-        return view('admin.employee.emp_details', compact('employee', 'emp_relative', 'relative_type', 'media'));
+        return view('admin.employee.emp_details', compact('test','employee', 'emp_relative', 'relative_type', 'media'));
     }
 
     /**
@@ -106,9 +107,16 @@ class EmployeeController extends Controller
      * @param  \App\employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit($id)
     {
         //
+        $emp = employee::where('id', $id)->first();
+        $contract = Contract::all();
+        $insurance_type = insurancetype::all();
+        $evaluation_type = evaluationType::all();
+        $insurance_grade = insurance_grate::all();
+
+        return view('admin.employee.edit', compact('emp', 'contract', 'insurance_type', 'evaluation_type', 'insurance_grade'));
     }
 
     /**
@@ -118,9 +126,41 @@ class EmployeeController extends Controller
      * @param  \App\employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, employee $employee)
+    public function update(Request $request)
     {
         //
+        //return $request->all();
+        $validate = $this->validate($request,[
+            'name' => 'required',
+            'Job_number' => 'required',
+            'Job_title' => 'required',
+            'salary' => 'required',
+            'contract_id' => 'required',
+            'insurance_type_id' => 'required',
+            'evaluation_type_id' => 'required',
+            'insurance_grade_id' => 'required',
+            'family_members' => 'required',
+            'wives_number' => 'required',
+            'grandchildren' => 'required'
+        ]);
+        $employee = employee::where('id', $request->id)->update([
+            'name' => $request->name,
+            'Job_number' => $request->Job_number,
+            'Job_title' => $request->Job_title,
+            'salary' => $request->salary,
+            'contract_id' => $request->contract_id,
+            'insurance_type_id' => $request->insurance_type_id,
+            'evaluation_type_id' => $request->evaluation_type_id,
+            'insurance_grade_id' => $request->insurance_grade_id,
+            'family_members' => $request->family_members,
+            'wives_number' => $request->wives_number,
+            'grandchildren' => $request->grandchildren
+        ]);
+
+        session()->flash('update', 'Employee updated successfuly');
+
+        return redirect('employee');
+
     }
 
     /**
@@ -129,8 +169,13 @@ class EmployeeController extends Controller
      * @param  \App\employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(employee $employee)
+    public function destroy(Request $request)
     {
         //
+        $emp = employee::findOrFail($request->id);
+        $emp->delete();
+
+        session()->flash('Delete', 'Employee deleted successfuly');
+        return redirect('employee');
     }
 }
